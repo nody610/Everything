@@ -1,0 +1,383 @@
+Home Page Redesign — Game Experience Overhaul
+Role
+
+Act as a senior game UX designer and frontend engineer working directly on the existing project.
+
+You are modifying an existing educational game. Do NOT rebuild the application from scratch. First inspect the existing codebase and understand how the current Home screen, navigation, player progression, XP, coins, streak, Tower preview, Lucky Spin, Word of the Day, Robo Specter, settings, and other existing systems work.
+
+Preserve existing functionality wherever possible.
+
+This task is ONLY the redesign and restructuring of the HOME PAGE. Do not redesign the Play/Tower page, Shop, Achievements, or Leaderboard yet.
+
+Product structure
+
+The application has five primary navigation tabs:
+
+Home
+Play
+Shop
+Achievements
+Leaderboard
+
+Lessons and battles are part of the game's progression system and will later be connected to the Play/Tower experience.
+
+The Home page is the player's command center. It should NOT contain every feature in the application.
+
+Its purpose is to answer five questions immediately:
+
+Who am I?
+How far have I progressed?
+What should I do next?
+What can I do today?
+What is happening in the game world?
+Core design direction
+
+The current Home page feels too much like a collection of UI components and educational-app controls.
+
+Redesign it so that it feels like a real game home screen.
+
+The player should feel:
+
+"That is MY progress. That is MY Tower. I know what I should do next."
+
+Do not solve this merely by adding more cards, emojis, labels, or decorative effects.
+
+Create a strong visual hierarchy.
+
+The Home page should feel intentional, atmospheric, polished, and game-like while remaining appropriate for an educational product.
+
+Use the existing project's visual language and assets where appropriate, but replace obvious placeholder-style UI such as unnecessary emoji-based game assets where a proper existing asset or icon can be used.
+
+Do not introduce human characters or creature characters as decorative game assets.
+
+HOME PAGE STRUCTURE
+1. Player identity and progression
+
+At the top of the Home screen, show:
+
+Player name
+Current level
+XP progress
+XP required for the next level
+
+The XP bar should visually communicate progression.
+
+When XP changes, the progress bar should animate smoothly rather than instantly jumping.
+
+Do not make the XP section unnecessarily large.
+
+The player's educational grade/age category should remain accessible, but it should not dominate the Home screen. It is a player setting, not the primary motivational element.
+
+2. Compact player status
+
+Show the player's important persistent resources in a clean, compact area:
+
+Coins
+Streak
+League/rank
+
+These should be readable at a glance.
+
+They should not each become giant cards.
+
+Use consistent visual icons/assets.
+
+The coin icon should use the project's existing custom coin/currency asset if one exists.
+
+Do not substitute random emojis for the game's currency.
+
+3. CONTINUE — the primary action
+
+Create one clearly dominant action:
+
+CONTINUE
+
+The button should represent the player's next meaningful activity.
+
+Example:
+
+"Continue Journey"
+
+with contextual information such as:
+
+"Floor 2 · Lesson 4"
+
+The exact text should be generated dynamically from the existing progression system where possible.
+
+The player should immediately understand:
+
+"This is what I should do next."
+
+Clicking Continue should use the existing navigation/progression logic to take the player to the appropriate next activity.
+
+Do NOT invent a new progression system if one already exists.
+
+Use the existing system and improve its presentation.
+
+The Continue button should have polished hover, pressed, focus, and transition states.
+
+4. Tower preview
+
+Keep the Tower visible on the Home screen.
+
+However, treat it as a meaningful miniature representation of the player's game world, not as a decorative picture.
+
+The Tower preview should communicate progression.
+
+Where the existing game data supports it:
+
+completed/explored portions should appear illuminated
+the player's current position/progress should be visually identifiable
+unexplored portions should remain visually subdued
+the Tower should reflect the player's progression state
+
+The Tower preview should be clickable.
+
+Clicking it should take the player to the Play tab.
+
+IMPORTANT:
+
+Do NOT redesign the full Tower/Play page in this task.
+
+Do NOT redesign the Tower's floor map in this task.
+
+Only make the Home-page Tower preview feel meaningful and connected to the player's progression.
+
+Tower customization will be redesigned later as part of the Shop/economy redesign. Do not invent a replacement customization system now.
+
+5. DAILY ACTIVITIES
+
+Create a clean Daily section containing:
+
+Word of the Day
+
+Keep one Word of the Day feature on Home.
+
+There must not be duplicate Word of the Day components.
+
+Make it feel like a daily activity rather than a static information box.
+
+When the player interacts with it, provide an appropriate visual response.
+
+If the existing Word of the Day functionality is locked behind an unintended progression requirement, inspect the code and determine why.
+
+Do not arbitrarily require the player to defeat Boss 2 merely to access a daily feature unless that restriction is explicitly part of the game's intended design.
+
+Do not silently remove legitimate progression restrictions; identify and preserve intentional game rules.
+
+Lucky Spin
+
+Keep ONE Lucky Spin feature on Home.
+
+There must not be duplicate Lucky Spin components.
+
+The Lucky Spin must behave like an actual interactive reward mechanic.
+
+When the player presses Spin:
+
+The wheel should visibly rotate.
+The rotation should have convincing acceleration/deceleration.
+The wheel should stop on the awarded segment.
+The reward should be clearly revealed.
+The reward should be added to the player's existing reward/currency system.
+The player should receive satisfying visual feedback.
+The interaction should prevent accidental repeated spins while the wheel is currently spinning.
+
+Do NOT simply replace the current "Spin" button result with text saying that the player received coins.
+
+The physical interaction is part of the reward.
+
+Use the existing reward logic where possible.
+
+Do not invent an entirely new economy.
+
+6. ROBO SPECTER
+
+Keep Robo Specter as an important Home-page presence.
+
+However, he should not behave like a generic motivational notification.
+
+His messages should feel contextual to the player's journey.
+
+Examples of appropriate message categories:
+
+story/lore
+reaction to player progression
+information about the Tower
+information about a phenomenon
+commentary on a recently completed activity
+hints about what the player should do next
+occasional educational encouragement
+
+For example:
+
+"You've reached the third floor. The Storm of Wormorks is stronger than the previous phenomenon. Make sure you're prepared."
+
+Or:
+
+"You recovered another crystal fragment. The Tower is beginning to respond."
+
+Do not use repetitive generic messages such as:
+
+"Great job!"
+"Keep going!"
+"You're doing amazing!"
+
+unless they are part of a larger contextual message.
+
+The system should support changing Robo Specter messages based on player state where the existing architecture allows it.
+
+7. SETTINGS
+
+Remove scattered standalone controls from the Home-page visual hierarchy.
+
+Create one clear Settings entry, preferably represented by a conventional gear/settings icon.
+
+Settings should eventually contain things such as:
+
+educational grade selection
+language
+light/dark mode
+sound/music
+narrator/voice preferences
+account information
+logout
+
+For THIS task, do not build an enormous settings system if one does not already exist.
+
+Instead, consolidate the existing scattered controls into a Settings entry/modal/page using the existing functionality.
+
+The Home screen should no longer have unrelated standalone controls such as:
+
+a separate dark-mode button
+a separate language button
+a separate logout button
+
+unless they are already part of the application's global navigation system and cannot reasonably be moved.
+
+8. REMOVE HOME-PAGE CLUTTER
+
+The existing Home page contains items that belong elsewhere or appear duplicated.
+
+Inspect the current implementation and consolidate/remove obvious duplicates.
+
+Specifically:
+
+Remove duplicate Lucky Spin instances.
+Remove duplicate Word of the Day instances.
+Remove the Lessons section from Home if it duplicates the future Play/Tower progression.
+Remove the Example Test from Home unless it serves a clearly defined product purpose.
+Do not create another Battle section on Home.
+Do not create another Shop section on Home.
+Do not create another Achievements section on Home.
+Do not create another Leaderboard section on Home.
+
+Those are separate destinations.
+
+The five primary tabs remain:
+
+Home | Play | Shop | Achievements | Leaderboard
+
+9. Navigation
+
+Preserve the existing primary navigation.
+
+Make sure Home is clearly identifiable as the current tab.
+
+Do not rename the primary tabs during this task.
+
+The Play tab will later become the main Tower experience.
+
+The Shop, Achievements, and Leaderboard will be redesigned separately.
+
+10. Interaction quality
+
+This is extremely important.
+
+Do not interpret "game-like" as "add random shaking everywhere."
+
+Use purposeful micro-interactions.
+
+Examples:
+
+XP smoothly fills.
+Continue button has a subtle responsive interaction.
+Tower preview responds when hovered/tapped.
+Lucky Wheel physically spins.
+Word of the Day responds to interaction.
+Coins update with a small satisfying transition when rewards are received.
+Robo Specter's panel can appear/disappear smoothly.
+Cards/buttons have clear pressed/hover/focus states.
+Transitions should feel consistent across the page.
+
+Animations should communicate state changes and reward the player.
+
+Do not add excessive bouncing, shaking, particles, or flashy effects merely for decoration.
+
+11. Visual language
+
+The current project contains some emoji-based placeholders.
+
+Gradually move the Home page toward a consistent game visual language.
+
+Use:
+
+existing custom game assets
+consistent iconography
+consistent borders
+consistent typography
+consistent reward symbols
+consistent visual hierarchy
+
+Do not replace every emoji blindly.
+
+Only replace emoji when it is functioning as a game asset/icon and a proper visual treatment is available or can be created using the project's existing style.
+
+The result should feel like one coherent game world rather than a website assembled from unrelated UI widgets.
+
+12. Important implementation constraints
+
+Before editing:
+
+Inspect the existing project.
+Identify the current Home-page component/HTML/CSS/JavaScript.
+Identify how XP, coins, streak, progression, Tower state, Word of the Day, Lucky Spin, and navigation are currently implemented.
+Reuse existing data and logic wherever possible.
+Do not create duplicate state systems.
+Do not break existing navigation.
+Do not redesign other tabs during this task.
+Do not remove functionality simply because it is visually inconvenient.
+Keep the project runnable.
+Do not create unnecessary new files.
+
+If temporary files are created during implementation, remove them when finished.
+
+Acceptance criteria
+
+The redesign is successful only if all of the following are true:
+
+Home has a clear visual hierarchy.
+The player's name and progression are immediately visible.
+XP progression is visually understandable.
+Coins, streak, and league/rank are visible without dominating the screen.
+There is one obvious Continue action.
+The Tower preview feels like the player's Tower and links to Play.
+There is exactly one Word of the Day feature.
+There is exactly one Lucky Spin feature.
+Lucky Spin physically animates instead of only displaying a reward message.
+Robo Specter feels contextual rather than generic.
+Settings are consolidated instead of cluttering the Home screen.
+Duplicate/random Home-page features are removed or consolidated.
+Primary navigation remains Home / Play / Shop / Achievements / Leaderboard.
+The page feels like a game interface rather than a collection of quiz controls.
+Existing functionality continues to work.
+Do not redesign the other four tabs yet.
+Final instruction
+
+Do not stop after making superficial visual changes.
+
+Actually implement the redesign in the existing project.
+
+After implementation, inspect the resulting Home page yourself and make a second refinement pass for spacing, hierarchy, responsiveness, interaction states, and visual polish.
+
+Do not merely tell me what you would change. Make the changes.
