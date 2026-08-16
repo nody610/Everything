@@ -1,422 +1,522 @@
-I want you to work ONLY on the HOME PAGE of this project.
+We are continuing the development of the existing King of War project.
 
-IMPORTANT: Do not redesign, modify, restructure, or add functionality to any other page or tab in this task.
+IMPORTANT:
+This task is ONLY to finish and fix the HOME PAGE.
 
-The only things you are allowed to modify are:
-1. The Home page.
-2. The Settings interface opened from the Home page.
-3. The specific underlying logic required to make Home-page features function correctly.
+Do not redesign other pages.
+Do not start unrelated features.
+Do not replace existing systems with placeholders.
+Do not simply explain what should be done — inspect the repository, implement the fixes, and verify them.
 
-Do not work on the Play/Tower page, Shop, Achievements, Leaderboard, Lessons page, Battle system, or any other page.
-
-Before making changes, inspect the existing project and understand how the current Home page and its data/functionality work.
-
-==================================================
-1. HOME PAGE — OVERALL GOAL
-==================================================
-
-The Home page should feel like the main dashboard of a real educational game.
-
-It should communicate the player's current status and give them a clear reason to continue playing.
-
-The Home page should contain the following core information/features:
-
-- Player name
-- Player level / XP progression
-- Coins
-- Current streak
-- Current league
-- Continue Your Journey
-- Tower progression preview
-- Word of the Day
-- Lucky Wheel
-- Robo Specter
-
-Do not turn the page into a cluttered dashboard.
-
-The player should immediately understand:
-
-"Who am I?"
-"How am I progressing?"
-"What should I do next?"
-"What rewards/features can I interact with today?"
+Before making changes, inspect the existing project structure, components, routes, state, data, and repository contents so you understand how the current system actually works.
 
 ==================================================
-2. TOP PLAYER STATUS
+HOME PAGE — CURRENT TARGET
 ==================================================
 
-Keep the player's name and progression clearly visible near the top.
+The Home page is the main player dashboard.
 
-Display:
+Its purpose is to show the player's current status and give them one obvious next action.
+
+The Home page should contain:
 
 - Player name
 - XP / level progression
 - Coins
 - Streak
-- League
+- Current league
+- Robo Specter
+- Continue Your Journey
+- Tower progression preview
+- Word of the Day
+- Lucky Wheel
+- Settings access
 
-These elements should look like part of one coherent game HUD/status area rather than unrelated cards.
+The page should feel like a polished game rather than a generic educational dashboard.
 
-The league should remain visible because it is part of the player's progression and motivation.
-
-Do not invent a new league system.
-
-Use the existing league/progression logic if it already exists.
+Do not overcrowd it.
 
 ==================================================
-3. SETTINGS BUTTON
+1. SETTINGS GEAR — FIX THE POSITION
 ==================================================
 
-Move the Settings gear to a proper corner position.
+The Settings interface itself has already been improved and is acceptable for now.
 
-It should be located where users naturally expect a settings button to be, rather than floating awkwardly inside the page content.
+Do NOT redesign the inside of the Settings interface again unless a functional problem is discovered.
 
-It should remain visually secondary to the main gameplay/progression elements.
+The remaining problem is the Settings gear icon on the Home page.
 
-When opened, redesign the Settings interface so it looks polished and consistent with the rest of the game.
+It is currently positioned incorrectly.
 
-Keep the useful existing settings, such as:
+Move the Settings gear to the proper upper-left corner of the Home-page header/container.
 
-- Dark/Light mode
+It should look like a normal game/application settings button.
+
+It must remain correctly positioned on both desktop and mobile layouts.
+
+Do not merely change its appearance.
+Actually fix its layout/position.
+
+==================================================
+2. SETTINGS — KEEP THE CURRENT IMPROVEMENT
+==================================================
+
+Keep the improved Settings interface.
+
+The player's learning stage/grade must NOT be changeable from Settings.
+
+Remove/keep removed the option that allows the player to switch between learning stages/grades.
+
+Keep the useful existing settings such as:
+
+- Theme
 - Language
 - Logout
 - Close
 
-Remove the option to change the player's learning stage/grade from Settings.
-
-The learning stage should not be casually changed from this menu.
-
-Do not invent unnecessary settings.
-
-The Settings interface should be simple, clean, and game-like.
+Do not add unnecessary settings.
 
 ==================================================
-4. ROBOSPECTER
+3. ROBO SPECTER — MOVE HIM UP
 ==================================================
 
-Robo Specter should appear ABOVE "Continue Your Journey."
+Robo Specter is currently too low on the Home page.
 
-He should feel like an actual guide/companion in the game rather than a decorative message at the bottom of the homepage.
+Move Robo Specter ABOVE "Continue Your Journey."
 
-His messages should be short and contextual.
+The intended hierarchy should be approximately:
 
-He can comment on things such as:
+Player status
 
-- The player's current progress
-- What the player should do next
-- A useful tip
-- A small piece of lore
-- A player's recent accomplishment
-- Encouragement
+↓
+Robo Specter
 
-Do not make Robo Specter dominate the screen.
+↓
+Continue Your Journey
 
-The player should understand that he is part of the game's world.
+↓
+Tower progression
 
-Use the existing Robo Specter implementation where possible rather than creating a completely separate system.
+↓
+Word of the Day / Lucky Wheel
 
-==================================================
-5. CONTINUE YOUR JOURNEY
-==================================================
+Robo Specter should feel like the player's guide/companion.
 
-"Continue Your Journey" should be the primary call-to-action on the Home page.
+His content should remain concise and useful.
 
-It should clearly tell the player what they are continuing.
-
-For example:
-
-"Continue Lesson 1"
-
-or
-
-"Continue Lesson 7"
-
-depending on the player's actual progress.
-
-This must be dynamic.
-
-Do NOT hardcode one lesson.
-
-When the player presses it, it should continue the player's current journey using the existing lesson/navigation system.
-
-IMPORTANT:
-
-Do NOT redesign the Lessons page in this task.
-
-Do NOT create a Lessons tab.
-
-Do NOT create a large lesson-progress section on the Home page.
-
-The Home page only needs one clear gateway into the player's current lesson:
-
-CONTINUE YOUR JOURNEY.
+Do not make him dominate the page.
 
 ==================================================
-6. TOWER PROGRESSION PREVIEW
+4. CONTINUE YOUR JOURNEY — FIX THE FUNCTIONALITY
+==================================================
+
+This is one of the most important fixes.
+
+Currently the Home page displays something similar to:
+
+"Continue your first lesson"
+
+but clicking it does not actually navigate anywhere.
+
+Fix the real navigation.
+
+For a new player:
+
+Continue Your Journey
+→ the actual first available lesson / existing lesson-selection flow.
+
+For a returning player:
+
+Continue Your Journey
+→ the player's actual current/next lesson.
+
+Do NOT hardcode Lesson 1 for everyone.
+
+Do NOT create a fake destination.
+
+Do NOT simply change the text.
+
+Trace the existing lesson system and connect the Home-page button to the real lesson flow.
+
+After implementing this, actually verify that clicking/tapping the button produces a real navigation/state transition.
+
+==================================================
+5. TUTORIAL / FIRST-TIME ONBOARDING
+==================================================
+
+The current tutorial is only partially working.
+
+Current behavior:
+
+- A message appears telling the player to start the first lesson.
+- Other parts of the interface are disabled/dimmed.
+- The Continue Your Journey button is NOT actually highlighted.
+- Clicking Continue Your Journey does NOT work while the tutorial is active.
+- Clicking around randomly can eventually make the tutorial disappear.
+
+That is not acceptable.
+
+Turn this into a real guided interaction.
+
+For a new player:
+
+STEP 1:
+Show a concise instruction telling the player what to do.
+
+STEP 2:
+Visually highlight the actual Continue Your Journey control.
+
+The highlight must surround/point to the actual clickable control, not merely display a sentence somewhere else on the screen.
+
+STEP 3:
+Temporarily prevent unrelated interactions.
+
+STEP 4:
+Allow the player to click/tap the highlighted Continue Your Journey control.
+
+STEP 5:
+That click must trigger the real lesson navigation.
+
+STEP 6:
+The tutorial must progress/complete normally.
+
+The player must NOT:
+
+- click random areas to dismiss it
+- click multiple unrelated times
+- refresh the browser
+- become trapped
+
+It must work with:
+
+- Desktop mouse
+- Mobile touch
+
+Do not create a fake tutorial that only displays text.
+
+==================================================
+6. WORD OF THE DAY — REMOVE THE WRONG LOCK
+==================================================
+
+Word of the Day is currently locked behind defeating the first/second boss.
+
+That is incorrect for the Home-page daily feature.
+
+A new player should not be shown a daily feature that they cannot access because they have not yet defeated bosses that they cannot currently reach.
+
+Make Word of the Day accessible from the Home page without requiring those boss defeats.
+
+Use the existing Word of the Day logic/data if it already exists.
+
+Do not create duplicate systems.
+
+Do not fabricate content.
+
+Make sure the player can actually open/use the feature.
+
+==================================================
+7. LUCKY WHEEL — UNLOCK + ACTUALLY ANIMATE
+==================================================
+
+The Lucky Wheel is currently locked behind boss progression.
+
+Remove that inappropriate lock.
+
+The Lucky Wheel should be available as a Home-page daily feature.
+
+Then make the interaction actually behave like a wheel.
+
+When activated:
+
+1. The wheel visibly spins.
+2. It rotates for a noticeable amount of time.
+3. It slows down.
+4. It stops on a reward.
+5. The selected reward is clearly revealed.
+6. The reward is granted exactly once.
+7. The player cannot trigger multiple spins simultaneously.
+
+Do NOT:
+
+- immediately display the reward
+- use a static wheel and fake the result
+- create a disconnected animation
+- create a second reward system if one already exists
+
+Connect the animation to the existing reward-selection logic.
+
+==================================================
+8. TOWER PROGRESSION PREVIEW
 ==================================================
 
 Keep the Tower progression preview on the Home page.
 
-This is ONLY a preview of the player's Tower progression.
+This is only a preview.
 
-Do NOT move the actual Tower onto the Home page.
+The actual Tower remains its own experience.
 
-Do NOT redesign the Tower page.
+The Home page preview should communicate the player's Tower progression at a glance, such as:
 
-The Home page preview should communicate the player's progression through the Tower at a glance.
+- Current Tower position
+- Current progression
+- Completed/explored progression
+- Current boss/floor status where appropriate
 
-It should show things such as:
+Do not move the entire Tower onto the Home page.
 
-- Current Tower progression
-- Current level/floor
-- Previously completed/explored progression
-- Current position
-
-The existing visual language can be improved, but do not turn this into a full Tower map.
-
-If the existing preview is clickable, preserve that functionality.
+Do not redesign the actual Tower page in this task.
 
 ==================================================
-7. WORD OF THE DAY
+9. LESSONS — ACTUAL REPOSITORY DATA MUST BE USED
 ==================================================
 
-Keep Word of the Day on the Home page.
+This is a major issue.
 
-It should be a daily feature.
+The current application contains title-only lesson placeholders for much of the lesson structure.
 
-It should be accessible directly from the Home page.
+I have previously told you that the actual lesson material exists in the repository/GitHub.
 
-Do not create duplicate Word of the Day components.
+Do NOT assume the lesson content is missing merely because the current UI contains placeholders.
 
-Use the existing Word of the Day logic if it already exists.
+Search the repository thoroughly.
 
-Do not lock Word of the Day behind an unrelated boss or progression requirement unless there is an explicit technical reason that already exists in the project.
+Find the actual lesson content/data.
 
-If there is an unnecessary lock, identify and remove it.
+Determine how the existing lesson content is structured and connect it to the application's lesson system.
 
-The feature should clearly communicate that it is a daily activity.
+Do NOT invent educational content.
 
-==================================================
-8. LUCKY WHEEL
-==================================================
-
-The Lucky Wheel needs to feel like an actual interactive game feature.
-
-Currently, the problem is that the wheel does not properly spin and can appear to simply produce a reward without showing the player the actual spinning process.
-
-Fix this.
-
-When the player activates the Lucky Wheel:
-
-1. The wheel visibly rotates.
-2. It rotates for a short, satisfying amount of time.
-3. It gradually slows down.
-4. It stops on a reward.
-5. The selected reward is clearly revealed.
-6. The player receives the reward exactly once.
-7. The button cannot accidentally trigger multiple spins while the wheel is already spinning.
-
-Do NOT simply display a reward immediately after the player clicks.
-
-The player needs to SEE the wheel spin.
-
-If reward-selection logic already exists, preserve it and connect the animation to the existing reward logic rather than creating a duplicate reward system.
-
-The Lucky Wheel should feel like a small but satisfying game interaction.
+Do NOT create fake placeholder lessons when real lesson content exists in the repository.
 
 ==================================================
-9. INITIAL TUTORIAL / ONBOARDING
+10. EXACTLY 30 LESSONS PER LEARNING STAGE
 ==================================================
 
-Fix the existing homepage tutorial so that it does not trap the player.
+The intended structure is EXACTLY 30 active lessons for every supported learning stage/grade.
 
-The tutorial should guide the player through the Home page step by step.
+There must not be 34 active lesson slots.
 
-The player should NOT need to refresh the page to regain control.
+You previously identified one stage with 34 total slots.
 
-The tutorial should:
+Fix that.
 
-1. Highlight the intended element.
-2. Prevent unrelated interaction only while that tutorial step is active.
-3. Allow the player to click/tap the highlighted element.
-4. Advance to the next tutorial step.
-5. Finish cleanly.
-6. Restore normal Home-page interaction.
+If four entries are extra placeholders, duplicates, or otherwise non-required entries, remove them from the active lesson structure.
 
-It must work with both:
+Do NOT invent four new lessons.
 
-- Desktop mouse/click interaction
-- Mobile touch interaction
+Do NOT keep 34 lessons active.
 
-Do not leave the player stuck on the tutorial.
+Check EVERY supported learning stage.
 
-Do not require a browser refresh.
+The final active structure must be:
 
-==================================================
-10. LESSON DATA CHECK
-==================================================
+Stage/Grade A → exactly 30 lessons
+Stage/Grade B → exactly 30 lessons
+Stage/Grade C → exactly 30 lessons
+etc.
 
-Inspect the actual lesson data in the project.
+Use the actual lesson content found in the repository.
 
-The intended structure is 30 lessons for each learning stage/grade that the application supports.
+If genuine content is missing from the repository, do not fabricate it. Report exactly what is missing.
 
-Do NOT blindly assume the project already contains exactly 30 lessons.
-
-Actually inspect the data.
-
-Determine:
-
-- How many lessons currently exist.
-- How they are grouped by learning stage/grade.
-- Whether each intended learning stage/grade contains 30 lessons.
-- Whether anything is missing.
-- Whether anything is duplicated.
-- Whether the Home page progression is using actual lesson data or hardcoded numbers.
-
-If the lesson structure is incorrect, fix the underlying data only if doing so is safe and does not require inventing educational content.
-
-If educational content is missing, do NOT fabricate lessons.
-
-Instead, report exactly what exists and what is missing.
-
-The important requirement is that the Home page must use the actual lesson progression data rather than hardcoded lesson numbers.
+But search the repository thoroughly before declaring something missing.
 
 ==================================================
-11. VISUAL DESIGN
+11. IMPORTANT: DO NOT PUT ALL LESSONS ON HOME
 ==================================================
 
-The current design is already moving in a better direction.
+Do NOT add a giant list of 30 lessons to the Home page.
 
-Improve it rather than completely replacing it.
+Do NOT add a separate lesson-progress dashboard to Home.
 
-The result should feel like a real game.
+We intentionally decided against that because it would make the Home page too crowded.
+
+The Home page only needs:
+
+CONTINUE YOUR JOURNEY
+
+That is the gateway into the actual lesson system.
+
+The actual lesson list/progression belongs in the lesson experience.
+
+==================================================
+12. HOME PAGE VISUAL QUALITY
+==================================================
+
+The current Home page already looks much better than the earlier version.
+
+Improve it without completely replacing its identity.
+
+The page should feel:
+
+- Like a real game
+- Polished
+- Clear
+- Rewarding
+- Interactive
+- Easy to understand
 
 Use:
 
-- Strong visual hierarchy
-- Clear primary CTA
-- Consistent cards
+- Strong hierarchy
 - Good spacing
-- Clear progression indicators
-- Subtle animations
+- Clear cards
+- Strong primary CTA
+- Subtle animation
 - Touch feedback
-- Hover feedback where appropriate
+- Hover feedback
 - Consistent typography
 - Consistent visual language
 
 Avoid:
 
-- Excessive emojis as game assets
-- Random decorative elements
-- Duplicate features
+- Excessive decorative elements
+- Excessive emojis
 - Too many competing buttons
+- Duplicate cards/features
 - Large empty spaces
-- A generic educational-dashboard appearance
+- Generic education-dashboard styling
 
-I will provide better custom game assets later.
+I will provide better game assets later.
 
-Therefore, structure the implementation so that icons/assets can easily be replaced later without rebuilding the entire Home page.
-
-Do not spend this task replacing every existing asset.
+Therefore, keep the implementation easy to replace with better assets later.
 
 ==================================================
-12. EXISTING NAVIGATION
+13. EXISTING NAVIGATION
 ==================================================
 
-Preserve the existing navigation structure.
-
-Do not add, remove, rename, or rearrange navigation tabs during this task.
+Do not add, remove, rename, or rearrange the existing navigation during this task.
 
 Do not create a new Lessons navigation tab.
 
-Do not create new navigation destinations.
+Do not redesign another page.
 
-The purpose of this task is to improve the existing Home page, not redesign the application's navigation architecture.
+This task is strictly about finishing the Home page and the functionality it directly depends on.
 
 ==================================================
-13. IMPORTANT SCOPE RESTRICTION
+14. STRICT SCOPE
 ==================================================
 
-THIS IS A HOMEPAGE-ONLY TASK.
-
-Do not redesign or modify:
+DO NOT redesign or modify:
 
 - Play/Tower page
 - Shop
 - Achievements
 - Leaderboard
-- Lessons page
-- Battle system
-- Any other page
+- Lesson UI/page design
+- Battle UI
+- Any other unrelated page
 
-Do not "improve" unrelated parts of the application simply because you notice something that could be improved.
+Only modify another file/component if a minimal technical change is required to make a Home-page feature actually work.
 
-If you notice an unrelated problem, leave it alone.
-
-Only make changes outside the Home page if a minimal technical change is absolutely required for a Home-page feature to function correctly.
+Do not use this task as an excuse to redesign the entire application.
 
 ==================================================
-14. IMPLEMENTATION PROCESS
+15. IMPLEMENTATION REQUIREMENT
 ==================================================
 
 Before editing:
 
-1. Inspect the project structure.
-2. Identify the Home-page components/files.
-3. Identify the data/state used by:
-   - XP
-   - Level
-   - Coins
-   - Streak
-   - League
-   - Tower progression
-   - Word of the Day
-   - Lucky Wheel
-   - Robo Specter
-   - Continue Your Journey
-   - Tutorial/onboarding
-4. Check for duplicate components.
-5. Check for duplicate Word of the Day or Lucky Wheel implementations.
-6. Check whether any Home-page features are incorrectly locked.
-7. Check the lesson data structure.
-8. Make a short implementation plan.
-9. Then implement the changes.
+1. Inspect the repository.
+2. Identify Home-page components.
+3. Identify the Settings component.
+4. Identify the tutorial/onboarding logic.
+5. Identify Continue Your Journey navigation.
+6. Identify Word of the Day logic.
+7. Identify Lucky Wheel logic.
+8. Identify Tower progression data.
+9. Locate the actual lesson repository/data.
+10. Determine the current lesson count for every stage.
+11. Determine why the Home-page features are incorrectly locked.
+12. Make a concise implementation plan.
 
-After implementation:
+Then IMPLEMENT the fixes.
 
-1. Verify the Home page renders correctly.
-2. Verify the Settings interface works.
-3. Verify the Lucky Wheel actually animates and spins.
-4. Verify the reward is granted exactly once.
-5. Verify Word of the Day works.
-6. Verify Continue Your Journey works.
-7. Verify the tutorial can be completed without refreshing.
-8. Verify desktop interaction.
-9. Verify mobile/touch interaction.
-10. Verify XP, coins, streak, league, and progression display correctly.
-11. Verify there are no duplicate Home-page features.
-12. Verify that unrelated pages were not redesigned or changed unnecessarily.
-
-Do not stop after changing the visual appearance.
-
-Actually verify the interactions.
-
-If something cannot safely be implemented because of the current architecture, explain the exact technical limitation instead of creating a fake or disconnected implementation.
+Do not stop at analysis.
 
 ==================================================
-15. FINAL RESPONSE
+16. VERIFICATION REQUIREMENT
 ==================================================
 
-After completing the work, give me a concise report containing:
+Before reporting completion, verify each of the following:
 
-1. What you changed on the Home page.
-2. What you changed in Settings.
-3. What you changed in the Lucky Wheel.
-4. What you changed in the tutorial.
-5. What you found about the lesson count and structure.
-6. Any problems you could not safely fix.
+[ ] Settings gear is physically positioned in the upper-left corner.
 
-Do not claim that something works unless you actually verified it.
+[ ] Settings still opens correctly.
 
-Again: HOME PAGE ONLY.
-Do not modify other pages.
+[ ] Continue Your Journey is visibly highlighted during the first-time tutorial.
+
+[ ] The tutorial tells the player what to do.
+
+[ ] The highlighted Continue button is actually clickable.
+
+[ ] Clicking Continue during the tutorial actually starts the intended lesson flow.
+
+[ ] The tutorial cannot be dismissed through random clicks.
+
+[ ] The tutorial does not require a refresh.
+
+[ ] Continue Your Journey works outside the tutorial.
+
+[ ] Continue Your Journey uses actual player progression.
+
+[ ] Word of the Day is accessible without defeating the bosses.
+
+[ ] Lucky Wheel is accessible without defeating the bosses.
+
+[ ] Lucky Wheel visibly spins.
+
+[ ] Lucky Wheel slows before stopping.
+
+[ ] Lucky Wheel reveals the actual selected reward.
+
+[ ] Lucky Wheel grants the reward exactly once.
+
+[ ] Robo Specter is ABOVE Continue Your Journey.
+
+[ ] Actual lesson content from the repository has been located/used where available.
+
+[ ] Every supported learning stage has exactly 30 ACTIVE lessons.
+
+[ ] No stage has 34 active lesson slots.
+
+[ ] No educational content has been fabricated.
+
+[ ] No unrelated page has been redesigned.
+
+If you cannot verify something, explicitly say so.
+
+Do not claim that something works simply because the code appears to contain an implementation.
+
+==================================================
+17. FINAL REPORT
+==================================================
+
+After implementation, give me a concise report:
+
+1. What you actually changed.
+2. What was wrong with the previous implementation.
+3. How Continue Your Journey now works.
+4. How the tutorial now works.
+5. How Word of the Day is unlocked.
+6. How Lucky Wheel works and animates.
+7. Where the lesson data was found.
+8. The exact number of active lessons in every learning stage.
+9. Any remaining issue that genuinely could not be fixed.
+
+Most importantly:
+
+DO NOT just make superficial visual changes.
+
+Inspect the actual repository.
+Fix the actual logic.
+Connect the actual data.
+Verify the actual interactions.
+
+Start by inspecting the repository and tracing:
+
+HOME → CONTINUE YOUR JOURNEY → LESSON SYSTEM
+
+and
+
+REPOSITORY → LESSON DATA → ACTIVE LESSONS.
