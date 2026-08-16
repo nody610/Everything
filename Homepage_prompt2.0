@@ -1,74 +1,52 @@
-FOCUS ONLY ON THE CRYSTAL SYSTEM AFTER BOSS COMPLETION.
+FOCUS ONLY ON THE LABELS OF THE TWO POST-BOSS OPTIONS.
 
-IMPORTANT: The current progression flow is working correctly. DO NOT break or redesign it.
+The crystal progression and gating are ALREADY WORKING CORRECTLY. DO NOT CHANGE THEM.
 
-The current flow is:
+I tested it after refreshing, and the game correctly prevents the player from continuing to Lesson 4 until the required crystals have been placed. When I return to Home and press Continue Your Journey, it correctly tells me to place the crystals.
 
-Lesson 1 → Minion 1 → Lesson 2 → Minion 2 → Lesson 3 → Minion 3 → Boss 1 → Home → Lesson 4
+So DO NOT modify:
+- crystal requirements
+- crystal placement
+- progression locking
+- Lesson 4 unlocking
+- Home-page progression
+- boss progression
+- Tower progression
 
-KEEP THIS FLOW EXACTLY AS IT IS.
+ONLY FIX THE LABELS OF THE TWO OPTIONS SHOWN AFTER THE BOSS.
 
-Now I want to make the crystals an important part of the progression and lore.
+Currently, both options are incorrectly labeled "الرئيسية", even though they perform different actions.
 
-After defeating a boss, the player receives the boss's crystals. These crystals should NOT simply be treated as a reward that disappears into the inventory.
+OPTION 1:
+This option currently redirects the player to the Tower progression/map where they can select the floor and PLACE THE CRYSTALS.
 
-The player should have to USE/PLACE the collected crystals somewhere meaningful in the world.
+Therefore, rename this first option from:
 
-LORE/PROGRESSION IDEA:
+"الرئيسية"
 
-The tower's floors are dark/inactive because of the Oblivion Storm.
+to a clear Arabic action such as:
 
-When the player defeats a boss and obtains its crystals, those crystals can be placed into the tower's corresponding mechanism/core/seal/altar — whatever existing lore terminology and visual design best fits the game.
+"ضع البلورات"
 
-Placing the required crystals should:
+This should clearly communicate that selecting it will take the player to the place where they need to put the crystals.
 
-1. Consume/use the collected crystals appropriately.
-2. Activate/illuminate the corresponding tower floor.
-3. Visually communicate that the floor has been CLEARED and restored.
-4. Unlock/enable progression toward the next floor/boss.
-5. Make the crystals feel like an actual gameplay/progression mechanic rather than just an ordinary reward.
+OPTION 2:
+This option actually redirects the player to the Home page.
 
-For example:
+Keep this option labeled:
 
-Boss 1 defeated
-→ player receives the required crystals
-→ player places the crystals into the appropriate tower mechanism
-→ Floor 1 becomes illuminated/restored
-→ the path toward Floor 2 becomes available
-→ the player can continue their journey.
+"الرئيسية"
 
-The same concept should be scalable for later floors:
+So the final two options should conceptually be:
 
-Boss 2 → crystals → activate Floor 2
-Boss 3 → crystals → activate Floor 3
-Boss 4 → crystals → activate Floor 4
-etc.
+1. "ضع البلورات" → Tower progression → Floor 1 → place crystals
+2. "الرئيسية" → Home page
 
-IMPORTANT:
-Do NOT redesign the existing progression flow.
+Do NOT change what either button does. Only correct their labels so the text accurately describes their existing destinations.
 
-Do NOT make the crystal interaction block the currently working lesson/minion/boss sequence in an awkward way.
+After changing the labels, test that:
+- "ضع البلورات" still opens the Tower progression.
+- "الرئيسية" still opens the Home page.
+- Crystal gating remains exactly as it currently works.
 
-Instead, integrate the crystal placement naturally into the existing post-boss sequence.
-
-The player should clearly understand:
-"I defeated this boss, obtained its crystals, and now I need to restore/illuminate this part of the tower."
-
-Please inspect the existing Tower UI, boss progression, crystal/reward logic, and lore-related elements before implementing this.
-
-If there is already an appropriate place/mechanism in the existing design for placing the crystals, use it instead of inventing an unrelated interface.
-
-The visual result should make it obvious that the floor has changed from DARK/INACTIVE → RESTORED/ILLUMINATED after the crystals are placed.
-
-Most importantly, the crystal placement should have REAL progression/state behind it, not just be a visual animation.
-
-Test that:
-
-Boss 1 completed
-→ crystals obtained
-→ crystals can be placed
-→ Floor 1 becomes illuminated/restored
-→ progression toward the next floor remains available
-→ returning to Home still correctly continues the player's journey.
-
-DO NOT modify unrelated features in this task.
+MAKE NO OTHER CHANGES.
