@@ -1,100 +1,168 @@
-THIS PROMPT IS ONLY ABOUT ONE ISSUE: THE ACTUAL RUNTIME TRANSITION AFTER COMPLETING A MINION.
+FOCUS ONLY ON POST-COMPLETION NAVIGATION AND THE BOSS ACCESSIBILITY ISSUE.
 
-Do NOT redesign the progression system again. You already stated that the intended six-step progression is implemented and verified.
+IMPORTANT: The main progression flow is NOW WORKING correctly. Do NOT rewrite or redesign the progression logic that was just fixed.
 
-However, the actual app behavior proves that something in the runtime logic is contradicting that implementation.
+The correct flow is currently working as:
 
-WHAT I ACTUALLY OBSERVED:
+Lesson 1 → Minion 1 → Lesson 2 → Minion 2 → Lesson 3 → Minion 3 → Boss 1
 
-Lesson 1 → First Minion = CORRECT.
+DO NOT BREAK THIS FLOW.
 
-But after I COMPLETED THE FIRST MINION, the app immediately sent me to the FIRST BOSS / boss completion flow.
+There are now TWO specific problems to fix.
 
-That is WRONG.
+==================================================
+PROBLEM 1 — REMOVE "PLAY AGAIN"
+==================================================
 
-After completing the First Minion, the app MUST send me to Lesson 2.
+After completing a minion or boss, there is currently a "Play Again" option.
 
-So the actual runtime is behaving like:
+REMOVE THIS OPTION FROM THE PROGRESSION FLOW.
 
-Lesson 1 → Minion 1 → Boss 1
+It is currently dangerous because pressing "Play Again" sends the player back toward the boss/previous battle instead of continuing the intended progression. This can create loops and contradictory navigation.
 
-when it MUST behave like:
+We do NOT want the player to replay the previous battle from this completion screen.
 
-Lesson 1 → Minion 1 → Lesson 2
+Instead, completion screens must provide the correct NEXT-PROGRESSION action.
+
+For example:
+
+Lesson 1 completed
+→ option to go to Minion 1
+
+Minion 1 completed
+→ option to go to Lesson 2
+
+Lesson 2 completed
+→ option to go to Minion 2
+
+Minion 2 completed
+→ option to go to Lesson 3
+
+Lesson 3 completed
+→ option to go to Minion 3
+
+Minion 3 completed
+→ option to go to Boss 1
+
+Boss 1 completed
+→ option to continue to the NEXT appropriate lesson/progression step
+
+Use the same type of navigation logic that is already working correctly between Lesson 1 and Minion 1.
+
+The important point is:
+
+COMPLETION → NEXT PROGRESSION
+
+NOT:
+
+COMPLETION → PLAY AGAIN → PREVIOUS/WRONG BATTLE
+
+If the exact next destination cannot safely be determined at a particular completion screen, send the player to the Home page rather than sending them back into a previous battle.
+
+Do NOT leave a button that can send the player into the wrong battle.
+
+==================================================
+PROBLEM 2 — BOSS 1 BECOMES INACCESSIBLE
+==================================================
+
+There is another issue after completing the three minions.
+
+I completed:
+
+Lesson 1
+→ Minion 1
+→ Lesson 2
+→ Minion 2
+→ Lesson 3
+→ Minion 3
+
+Then I returned to the Home page.
+
+From Home, I selected:
+
+Continue Your Journey
+→ Go to Tower / البرج
+
+This correctly opened the Tower map.
+
+However, the first boss is shown as the current progression point, with the gold/current-progress frame around it, but THERE IS NO WAY TO ACTUALLY ENTER OR PLAY THE BOSS.
+
+This means the player has reached the boss in progression but cannot access it.
+
+That is a real navigation/state inconsistency.
+
+The expected behavior is:
+
+After Minion 3 is completed,
+→ Boss 1 should become AVAILABLE
+→ the player should be able to select Boss 1 from the Tower
+→ selecting Boss 1 should open the Boss 1 battle.
+
+Please inspect the actual code controlling:
+
+- enemy completion state
+- boss unlocking
+- current tower progression
+- boss availability
+- click/touch handlers on Tower levels
+- navigation from the Tower to a battle
+- the state that determines whether a boss is playable
+- any conditions that distinguish "current" from "unlocked/playable"
+- old code that may still consider the boss unavailable
+- any stale or contradictory progression state
 
 IMPORTANT:
-Do not simply tell me that the intended six-step flow exists in the code. I already know that is what you implemented. The problem is that the RUNNING APPLICATION is not following it.
 
-Please investigate WHY the running application is producing this contradiction.
+Do NOT simply change the visual state of the boss.
 
-I strongly suspect there is another piece of progression/navigation/completion logic still active somewhere in the codebase that is overriding, bypassing, or contradicting the new progression logic.
+I need the boss to be ACTUALLY PLAYABLE.
 
-Look specifically for:
+If Boss 1 is marked as the current progression target, there must be a valid interaction that opens Boss 1.
 
-- post-minion completion handlers
-- enemy completion handlers
-- victory/congratulations screens
-- reward screens
-- "continue" actions after defeating an enemy
-- navigation logic after an enemy is defeated
-- boss-unlock logic
-- progression-state updates
-- hardcoded enemy/boss sequences
-- old progression logic from the previous implementation
-- duplicate progression functions
-- fallback navigation
-- stale state
-- cached/local progression state
-- conditions that interpret "enemy completed" as "boss unlocked"
-- conditions that automatically send the player to the boss after any enemy
-- contradictory logic between lesson progression and tower/enemy progression
-- any old code that still assumes the minions lead directly to the boss
+==================================================
+IMPORTANT DEBUGGING REQUIREMENT
+==================================================
 
-The fact that the app showed me the full "Congratulations / reward / continue" flow for the first minion and then sent me toward the first boss is especially important.
+Do not make another superficial UI patch.
 
-Trace that EXACT execution path.
+Trace the actual state transition:
 
-Do not assume the problem is in the lesson system.
+Minion 3 completed
+→ what state is saved?
+→ what does the Tower read?
+→ why does the boss become visually "current"?
+→ why does the Tower still refuse to provide a playable action?
+→ what exact condition prevents navigation into Boss 1?
 
-Start from the moment the player finishes Minion 1 and follow the actual code path that determines the next destination.
+Find the contradictory or outdated logic causing this.
 
-Find the exact condition/function/state that causes the application to choose Boss 1 instead of Lesson 2.
+There may still be old progression information in another part of the codebase. Check for duplicate, stale, hardcoded, or contradictory rules instead of assuming the newest progression code is the only code controlling this.
 
-Then fix THAT underlying cause.
+If possible, actually test this sequence in the running application:
 
-Also check for contradictory or duplicated progression information elsewhere in the project. If there is an older rule saying something equivalent to:
+Lesson 1
+→ Minion 1
+→ Lesson 2
+→ Minion 2
+→ Lesson 3
+→ Minion 3
+→ Home
+→ Continue Your Journey
+→ Tower
+→ select Boss 1
 
-"after defeating a minion → go to boss"
+Verify that Boss 1 can actually be opened.
 
-or:
+Also verify that "Play Again" is no longer capable of sending the player backward or into a boss loop.
 
-"after completing an enemy → boss becomes next"
+DO NOT MODIFY unrelated features in this prompt.
+DO NOT change the lesson count.
+DO NOT change the lesson content.
+DO NOT change the colors.
+DO NOT change the game modes.
+DO NOT change the settings.
+DO NOT redesign the Home page.
 
-or any equivalent hardcoded behavior, remove/update it so it no longer conflicts with the intended progression.
-
-VERY IMPORTANT:
-Do not solve this by changing text, labels, button names, or merely changing what the screen says.
-
-The actual navigation/state transition must be correct.
-
-After fixing it, test the REAL RUNNING APPLICATION, not only the code or a theoretical state.
-
-Start from a fresh progression state and actually perform:
-
-Lesson 1 → complete it → Minion 1
-Minion 1 → complete it → VERIFY THAT LESSON 2 OPENS
-
-Stop at that point and verify that the app does NOT open:
-- Boss 1
-- the boss reward screen
-- the boss victory screen
-- the boss introduction
-- any "return to home" screen that belongs to boss completion
-
-The expected destination immediately after Minion 1 is Lesson 2.
-
-If you have access to the browser/app testing environment, actually click through this sequence yourself and inspect what happens after Minion 1. Do not rely only on static code inspection.
-
-Most importantly: FIND THE CONFLICTING LOGIC that is causing the runtime to choose Boss 1.
-
-Do not make unrelated changes in this prompt.
+ONLY FIX:
+1. The incorrect "Play Again" navigation.
+2. The inability to enter/play Boss 1 after Minion 3 is completed.
