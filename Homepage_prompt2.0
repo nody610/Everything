@@ -1,633 +1,421 @@
-IMPORTANT: This is an implementation/fix request, not a request to redesign the game from scratch. Preserve the existing visual style, navigation structure, game logic, assets, naming, and gameplay that we have already built unless I explicitly ask you to change something.
+IMPORTANT — DO NOT JUST PATCH THE VISIBLE UI.
+Several of these issues have been requested multiple times, but the implementation keeps reverting to the old logic. Before changing anything, inspect the existing code and determine WHY each issue is still happening. Find the underlying state, progression, routing, and data logic responsible for it, then fix the actual implementation.
 
-I need you to carefully inspect the existing project/GitHub source before making changes. Do not invent replacement content when the existing project already contains the correct content.
-
-There are several connected issues that must be fixed together. Please treat this as ONE coherent progression/navigation system.
+This is a corrective implementation pass. Do not merely make visual changes that look correct while the underlying progression remains wrong.
 
 ==================================================
-1. IMPORTANT: USE THE EXISTING GAME MODES
+1. LESSON SYSTEM — IT MUST BE 15 LESSONS, NOT 5
 ==================================================
 
-We already built four gameplay modes previously.
+The current implementation still behaves as if there are only 5 lessons.
 
-Use the SAME gameplay modes we already built, with the SAME names/labels and the SAME underlying gameplay implementation.
+THIS IS WRONG.
 
-Do NOT create new substitute modes.
-Do NOT rename them.
-Do NOT redesign them.
+For the launch version, there must be:
 
-The four existing modes are:
+- 15 total lessons.
+- 5 bosses.
+- 3 lessons per boss.
+- 3 minions per boss.
+- Therefore:
+  - Lessons 1–3 → Boss 1
+  - Lessons 4–6 → Boss 2
+  - Lessons 7–9 → Boss 3
+  - Lessons 10–12 → Boss 4
+  - Lessons 13–15 → Boss 5
 
-1. Multiple-choice mode
-2. Combining words into a sentence
-3. Combining letters into a word
-4. The Tetris-like mode
+The progression structure must be:
 
-The Tetris-like mode is the PREMIUM/PAID mode.
+Lesson 1 → Minion 1 → Lesson 2 → Minion 2 → Lesson 3 → Minion 3 → Boss 1
 
-The first three modes are available to free players.
-The fourth/Tetris-like mode must remain visible but locked/greyed out for free players.
+Then:
 
-This is intentional because showing the locked premium mode is part of the game's motivation to upgrade.
+Lesson 4 → Minion 4 → Lesson 5 → Minion 5 → Lesson 6 → Minion 6 → Boss 2
+
+And so on until:
+
+Lesson 13 → Minion 13 → Lesson 14 → Minion 14 → Lesson 15 → Minion 15 → Boss 5.
+
+Do NOT leave the old 5-lesson system anywhere in the code.
+
+Do NOT hard-code the progression around 5 lessons.
+
+Do NOT create only 5 lesson entries and visually display 15 progression segments.
+
+There must actually be 15 lesson records/content items available to the game.
 
 IMPORTANT:
-These gameplay modes should NOT appear as separate tabs on the Home page.
+Before implementing this, inspect the existing lesson/content data and the GitHub repository.
 
-They should appear INSIDE the player's progression after:
-Continue Your Journey → Lesson → appropriate Minion → choose gameplay mode.
+TRANSFER/IMPORT ALL OF THE LESSON CONTENT THAT ALREADY EXISTS IN THE GITHUB REPOSITORY INTO THE ACTUAL GAME.
 
-The existing main navigation should remain the same:
+This has been requested repeatedly. Do not leave the GitHub lesson content sitting outside the playable game.
 
-Home
-Play
-Item Shop
-Achievements
-Leaderboard
+If the existing architecture expects a different data structure, adapt it properly. The important requirement is that the actual game contains and uses the complete 15-lesson launch curriculum.
 
-Do NOT add a new permanent "Modes" tab or "Lessons" tab to the main navigation.
+If you discover that the current implementation is still using 5 lessons, determine exactly where that limit is coming from and remove/fix it.
 
 ==================================================
-2. FIX THE CONTINUE YOUR JOURNEY FLOW
+2. FIX THE ACTUAL PROGRESSION FLOW
 ==================================================
 
-The current flow is WRONG.
+The current flow is STILL WRONG.
 
-Right now:
+Right now it behaves approximately like:
 
-Continue Your Journey
-→ Lesson 1
-→ Lesson 2
-→ Lesson 3
-→ Tower/map page
+Lesson 1 → Lesson 2 → Lesson 3 → Modes
 
-That is NOT what we want.
+That is NOT the intended gameplay loop.
 
-The correct flow is:
+Investigate why the application is still routing directly from one lesson to the next.
 
-Continue Your Journey
-→ Lesson 1
-→ dedicated gameplay-mode selection page
-→ Minion 1
-→ Lesson 2
-→ dedicated gameplay-mode selection page
-→ Minion 2
-→ Lesson 3
-→ dedicated gameplay-mode selection page
-→ Minion 3
-→ Boss 1
+The intended flow is:
 
-Then the same structure continues for Boss 2, Boss 3, Boss 4, and Boss 5.
-
-The player should NEVER simply be pushed automatically from Lesson 1 to Lesson 2 to Lesson 3 without interacting with the game progression.
-
-The lessons and combat/gameplay progression must be connected.
-
-==================================================
-3. EXACT PROGRESSION STRUCTURE
-==================================================
-
-For the initial launch version, use:
-
-15 lessons
-5 bosses
-3 minions per boss
-
-Therefore:
-
-Boss 1 chapter:
 Lesson 1
-→ Minion 1
+↓
+First Minion
+↓
 Lesson 2
-→ Minion 2
+↓
+Second Minion
+↓
 Lesson 3
-→ Minion 3
-→ Boss 1
-
-Boss 2 chapter:
+↓
+Third Minion
+↓
+Boss 1
+↓
 Lesson 4
-→ Minion 1
+↓
+Fourth Minion
+↓
 Lesson 5
-→ Minion 2
+↓
+Fifth Minion
+↓
 Lesson 6
-→ Minion 3
-→ Boss 2
+↓
+Sixth Minion
+↓
+Boss 2
+↓
+...and continue the same structure through Boss 5.
 
-Boss 3 chapter:
-Lesson 7
-→ Minion 1
-Lesson 8
-→ Minion 2
-Lesson 9
-→ Minion 3
-→ Boss 3
+The critical point:
 
-Boss 4 chapter:
-Lesson 10
-→ Minion 1
-Lesson 11
-→ Minion 2
-Lesson 12
-→ Minion 3
-→ Boss 4
+FINISHING A LESSON MUST NOT AUTOMATICALLY REDIRECT THE PLAYER TO THE NEXT LESSON.
 
-Boss 5 chapter:
-Lesson 13
-→ Minion 1
-Lesson 14
-→ Minion 2
-Lesson 15
-→ Minion 3
-→ Boss 5
+Instead, completing a lesson unlocks/redirects the player to the appropriate MINION encounter.
 
-This gives us exactly:
+For example:
 
-15 lessons = 3 lessons × 5 bosses
-15 minion encounters = 3 minions × 5 bosses
-5 bosses
+After completing Lesson 1:
+→ open the first minion encounter.
 
-This is the progression structure for the CURRENT launch version.
+After completing Lesson 2:
+→ open the second minion encounter.
 
-Do NOT remove bosses to make the free version fit.
-Do NOT change Boss 5 into Boss 2.
-Do NOT renumber the lore.
-Do NOT restructure the existing five-boss story.
+After completing Lesson 3:
+→ open the third minion encounter.
 
-The current decision is to keep all five bosses and provide 15 lessons for the initial version.
+After completing the third minion:
+→ unlock/redirect to Boss 1.
 
-A future major update can expand this system with additional lessons, bosses, gameplay, and lore. Do NOT build that future expansion now.
+Then repeat the same structure for the next boss.
+
+Please inspect the routing/state-management code and find out why the old Lesson 1 → Lesson 2 → Lesson 3 flow is still being triggered.
+
+Do not simply add another condition on top of the old routing if that leaves the old progression logic active. Fix the underlying progression flow.
 
 ==================================================
-4. FREE VS PAID PROGRESSION
+3. MINIONS — THERE MUST BE THREE PER BOSS
 ==================================================
 
-The free version should allow the player to experience the intended beginning of the progression.
-
-The Tetris-like gameplay mode is the premium restriction.
-
-When a free player reaches a minion and sees the four gameplay modes:
-
-Mode 1 = available
-Mode 2 = available
-Mode 3 = available
-Mode 4 / Tetris-like = visible but greyed out and locked
-
-If the player clicks the locked Tetris-like mode, clearly explain that this mode requires the full paid version.
-
-Do NOT hide the Tetris-like mode.
-
-The locked mode is intentionally visible because it is part of the game's upgrade motivation.
-
-The paid/full version unlocks the Tetris-like mode throughout the progression.
-
-Also preserve the existing full-trial behavior that was recently restored.
-
-==================================================
-5. MODE SELECTION MUST BE A FULL PAGE, NOT A POPUP
-==================================================
-
-This is VERY IMPORTANT.
-
-Currently, after the third lesson, Claude added a popup asking the player to choose a mode.
-
-That is NOT acceptable.
-
-Do NOT use a popup/modal for gameplay-mode selection.
-
-Create a dedicated FULL PAGE for gameplay-mode selection.
-
-Reason:
-
-If the player accidentally clicks outside the popup, the current implementation can leave the player stuck and they have to refresh/replay the lessons.
-
-A dedicated page eliminates that problem.
-
-The page should clearly show the four existing gameplay modes and allow the player to choose one.
-
-The player can safely navigate/select from this page without losing progression.
-
-The page should know which minion the player is about to face.
-
-Example:
-
-Lesson 1 completed
-→ "Choose how you want to face Minion 1"
-→ four gameplay modes
-→ player selects one
-→ Minion 1 gameplay begins
-
-After completing Minion 1:
-→ continue to Lesson 2
-
-After Lesson 2:
-→ mode-selection page for Minion 2
-
-After Minion 2:
-→ Lesson 3
-
-After Lesson 3:
-→ mode-selection page for Minion 3
-
-After Minion 3:
-→ Boss 1
-
-Use the existing mode names exactly as they already exist in the project.
-
-==================================================
-6. MINIONS MUST ACTUALLY BE PROGRESSION-LOCKED
-==================================================
-
-There is currently a serious state/progression bug.
-
-The first three minions appear GREEN/completed immediately, even though this is a fresh browser/session and the player has never played them.
+The current implementation incorrectly behaves as if there is only ONE minion before the boss.
 
 That is WRONG.
 
-"Minions" here means the regular, weaker enemies that appear before the boss.
+Every boss has THREE minions.
 
-They are NOT minibosses.
+A minion means a smaller, weaker enemy encounter that has fewer health points / a smaller health bar than a boss.
 
-They are weaker enemies with lower health/health points than the boss.
+For Boss 1:
 
-The initial state must be:
+Lesson 1 → Minion 1
+Lesson 2 → Minion 2
+Lesson 3 → Minion 3
+→ Boss 1
 
-Minion 1 = grey/locked or available according to the current progression state
-Minion 2 = grey/locked
-Minion 3 = grey/locked
-Boss = locked
+The player MUST complete all three minions before Boss 1 becomes available.
 
-The player must be the one who changes their state through actual progression.
+Do not allow the player to skip directly from the first minion to the boss.
 
-For a fresh player:
+Do not treat the first minion as if it represents all three minions.
+
+The three minions must be separate progression nodes with separate completion states.
+
+==================================================
+4. MINION COMPLETION STATES
+==================================================
+
+The minion progression must work exactly like a progression system.
+
+Initially:
+
+Minion 1 = locked/uncompleted
+Minion 2 = locked/uncompleted
+Minion 3 = locked/uncompleted
+
+When the player reaches Minion 1:
+
+Minion 1 = CURRENT / ACTIVE
+Minion 2 = LOCKED
+Minion 3 = LOCKED
+
+After completing Minion 1:
+
+Minion 1 = COMPLETED
+Minion 2 = CURRENT / ACTIVE
+Minion 3 = LOCKED
+
+After completing Minion 2:
+
+Minion 1 = COMPLETED
+Minion 2 = COMPLETED
+Minion 3 = CURRENT / ACTIVE
+
+After completing Minion 3:
+
+All three minions = COMPLETED
+Boss = CURRENT / UNLOCKED
+
+The player should be the one who causes the progression colors/state to change by actually completing the corresponding content.
+
+Do NOT pre-color the three minions green.
+
+Do NOT show future minions as completed.
+
+They must start locked/grey and progressively change state as the player completes them.
+
+==================================================
+5. BOSS COUNT — STOP USING THE OLD "3 BOSSES" LOGIC
+==================================================
+
+The current implementation still appears to contain logic such as:
+
+"Boss 3 / 1"
+
+or otherwise treats the game as if there are only 3 bosses.
+
+This must be investigated and fixed at the DATA/LOGIC level.
+
+The launch version has:
+
+10 total bosses in the full paid progression.
+
+The first 5 bosses are available in the launch/free-access progression structure we agreed on.
+
+Bosses 1–5 belong to the initial 15-lesson launch curriculum.
+
+Bosses 6–10 are part of the paid/full progression and must exist in the actual progression data rather than being falsely represented as nonexistent.
+
+Therefore, do not hard-code the boss count as 3.
+
+Do not leave any old "3 bosses" constants, arrays, counters, progress calculations, labels, or completion conditions active.
+
+Search the entire relevant codebase for the old boss-count logic and replace it with the correct progression architecture.
+
+When the player reaches Boss 6:
+
+- It should exist as a real progression node.
+- If the player is not subscribed, it should appear as locked/unavailable.
+- Clicking/tapping it should clearly explain that the full paid version is required.
+- It must NOT behave as though Boss 6 does not exist.
+
+The same principle applies to the remaining paid bosses.
+
+==================================================
+6. GAME MODES — USE THE EXISTING GAME MODES, BUT IN THE CORRECT PLACE
+==================================================
+
+Do NOT recreate new game modes.
+
+Use the SAME gameplay modes that were already built previously, with the SAME naming and concepts.
+
+The four modes are:
+
+1. Multiple Choice
+2. Combine Words Into a Sentence
+3. Combine Letters Into a Word
+4. Tetris-like Mode
+
+These modes should NOT appear as the primary gameplay choices on the Home page.
+
+They should appear AFTER the player completes the appropriate lesson and enters the corresponding minion encounter.
+
+For example:
 
 Lesson 1 completed
-→ Minion 1 becomes available
+→ Minion 1 encounter page
+→ player chooses one of the four game modes.
 
-Player completes Minion 1
-→ Minion 1 becomes GREEN/completed
-→ Minion 2 becomes available
+The fourth mode, Tetris-like Mode, remains locked/greyed out for users who do not have the full paid version.
 
-Player completes Minion 2
-→ Minion 2 becomes GREEN/completed
-→ Minion 3 becomes available
-
-Player completes Minion 3
-→ Minion 3 becomes GREEN/completed
-→ Boss becomes available
-
-Player completes Boss 1
-→ Boss 1 becomes GREEN/completed
-→ next chapter becomes available
-
-Do NOT initialize the first three minions as completed.
-
-Do NOT hard-code them as green.
-
-Their state must be derived from the player's actual progression/progress data.
-
-A fresh browser/new player should NOT inherit completed minions.
-
-Please inspect the existing progression-state logic and fix the underlying cause instead of simply changing the visual color.
-
-==================================================
-7. LESSON PROGRESSION GAUGE
-==================================================
-
-We now have a "Your Lessons" progression section on the Home page, similar to "Your Tower."
-
-Keep that concept.
-
-The Home page should contain:
-
-Your Tower / برجك
-and
-Your Lessons / دروسك
-
-The Lessons progression should visually match the Tower progression system.
-
-There should be 15 lesson progression segments for the current launch version.
-
-The progression should be segmented/discrete, not one continuous bar.
-
-Just like the Tower progression shown in the screenshots.
-
-Each lesson corresponds to one segment.
-
-As the player progresses, completed lesson segments should change color.
+The first three modes are available according to the intended free/paid rules.
 
 IMPORTANT:
+The modes page must be a FULL PAGE, not a popup/modal.
 
-The color change should NOT be a random color jump.
+The current implementation has already improved this part, so preserve that improvement.
 
-I specifically do NOT want something visually nonsensical like yellow → pink or unrelated colors.
-
-Use a coherent two-color progression spectrum/gradient.
-
-For example, a warm progression such as:
-
-yellow → orange → red
-
-or another visually logical progression between two recognizable main colors.
-
-The exact palette can be chosen to fit the existing game's design, but the progression must visually make sense.
-
-Do NOT use unrelated colors.
-
-The same principle should be applied consistently to the Tower progression and Lessons progression.
-
-The screenshots show that the segmented progression concept itself is good. Keep that.
+Do not revert it back into a popup.
 
 ==================================================
-8. CLICKING "YOUR LESSONS" MUST OPEN A REAL PAGE
+7. EXACT ARABIC TANWEEN — USE THESE EXACT STRINGS
 ==================================================
 
-Currently clicking Lessons opens a popup/list, but the list is essentially useless because the player cannot properly access the lessons.
+This is important because the current implementation has repeatedly placed the tanween visually/typographically incorrectly.
 
-Fix this.
+Use these EXACT Arabic strings:
 
-When the player clicks/touches "Your Lessons / دروسك", redirect them to a FULL PAGE.
+مرحبًا
 
-Do NOT use a popup.
+شكرًا
 
-Do NOT create a new permanent main-navigation tab.
+Do not rewrite them.
 
-The existing main navigation remains:
+Do not substitute another spelling.
 
-Home
-Play
-Item Shop
-Achievements
-Leaderboard
+Do not manually move the tanween onto the alif.
 
-The Lessons page is a destination reached from the Home page's "Your Lessons" progression component.
+For:
 
-On the Lessons page, show the complete lesson progression/list.
+مرحبًا
 
-The player must be able to:
+the tanween is associated with the final ب, with the alif serving as the supporting alif.
 
-- see all 15 lessons
-- see which lessons have been completed
-- see which lesson is currently available
-- see which lessons are locked
-- click/touch lessons that they are allowed to revisit
-- revisit completed lessons
-- access available lessons
-- understand why future lessons are locked
+For:
 
-Do NOT merely display the list as decorative text.
+شكرًا
 
-The lesson entries must actually be functional.
+the tanween is associated with the final ر, with the alif serving as the supporting alif.
 
-Use the real lesson names/content from the existing project.
+The exact text that should appear in the application is:
+
+"مرحبًا"
+
+and:
+
+"شكرًا"
+
+Please inspect the actual rendered Arabic text/component rather than assuming that writing a textual instruction about tanween is sufficient.
 
 ==================================================
-9. IMPORTANT: TRANSFER/USE ALL EXISTING LESSON CONTENT
+8. PROGRESSION COLORS — DO NOT USE RANDOM COLORS
 ==================================================
 
-THIS IS A DIRECT IMPLEMENTATION REQUIREMENT.
+There are TWO different concepts here.
 
-Inspect the GitHub/project source and locate ALL existing lesson content/data that has already been created.
+A) XP gauges / XP progress bars:
+These may use a smooth color gradient.
 
-Transfer/integrate ALL of those existing lessons into the actual game.
+B) Lesson and Tower progression:
+These should use DISCRETE progression states, not arbitrary gradients.
 
-Do NOT create placeholder lessons.
-Do NOT create fake lesson names.
-Do NOT show an empty lesson list.
-Do NOT omit existing lesson content.
+For Lesson progression and Tower progression, use three clear states:
 
-The lessons that already exist in GitHub must be properly connected to the game's lesson system and displayed/usable inside the game.
+1. LOCKED / NOT REACHED
+   → grey
 
-The lesson list should be populated from the real existing lesson data.
+2. CURRENT / CURRENTLY ACTIVE OR NEXT
+   → yellow
 
-If the project already contains lesson IDs, names, questions, vocabulary, grammar content, exercises, etc., reuse those structures instead of duplicating or inventing them.
+3. COMPLETED
+   → green
 
-Before finishing, verify that the lesson data actually appears in the playable game.
+This must be consistent everywhere.
 
-==================================================
-10. LESSON COUNT — DO NOT INVENT A DIFFERENT COUNT
-==================================================
+Do NOT use purple to mean "currently active / approaching this floor."
 
-For this launch version, the intended progression is 15 lessons.
+Do NOT use red to mean "completed."
 
-Do not claim that there are 30 lessons in the current launch version.
+Completed content = GREEN.
 
-The 30-lesson concept corresponds to a larger future progression with 10 bosses.
+Current/active content = YELLOW.
 
-For now:
+Locked/future content = GREY.
 
-15 lessons
-5 bosses
-3 lessons per boss
+The same semantic meaning must be used for:
 
-Future updates can expand this.
+- Tower progression on the Home page
+- Lesson progression on the Home page
+- Tower progression detail page
+- Lesson progression detail page
+- Minion progression
+- Boss progression
 
-==================================================
-11. FUTURE EXPANSION — DO NOT IMPLEMENT NOW
-==================================================
+If the player has completed a minion, it must be GREEN.
 
-The current launch version is intentionally limited.
+If the player is currently on a minion, it must be YELLOW.
 
-Future major updates may add:
+If the player has not reached it yet, it must be GREY.
 
-- more lessons
-- more bosses
-- more minions
-- more gameplay
-- deeper lore
-- exploration of the city
-- more explanation of the Oblivion Storm
-- more explanation of why the crystals were stolen
-- additional story/lore progression
-- potentially many more bosses over time
-
-The long-term structure could eventually scale beyond 5 bosses.
-
-But DO NOT implement this future content now.
-
-Build the current system in a way that is data-driven and expandable so that future lessons and bosses can be added without rewriting the entire progression system.
+Do not create a different color meaning for different screens.
 
 ==================================================
-12. LESSON/MINION/BOSS STATE MUST BE DATA-DRIVEN
+9. XP GAUGE GRADIENT
 ==================================================
 
-Do not solve this with hard-coded visual states.
+For the XP gauge specifically, use an actual logical color progression rather than two unrelated/random colors.
 
-The game should maintain actual progression state.
+Use a coherent warm progression such as:
 
-For example, conceptually:
+YELLOW → GOLD
 
-lessonCompleted[lessonId]
-minionCompleted[minionId]
-bossCompleted[bossId]
-currentLesson
-currentMinion
-currentBoss
+with the transition gradually moving from yellow toward gold.
 
-The exact implementation should follow the project's existing architecture.
+Do not use strange combinations such as yellow → purple or unrelated colors.
 
-The important point is:
+The gradient should visually communicate increasing XP/progress.
 
-Visual state must reflect actual player progress.
+Again:
 
-Grey = locked/uncompleted
-Available/current = clearly distinguishable
-Green = completed
+ONLY the XP-style gauges should use the smooth gradient.
 
-A new player must start with the correct initial state.
-
-Refreshing the browser must not magically mark minions as completed.
+Lesson/Tower progression segments should use the three discrete state colors:
+GREY → YELLOW → GREEN.
 
 ==================================================
-13. TANWEEN / ARABIC TEXT FIX
+10. DO NOT STOP AT VISUAL CHANGES
 ==================================================
 
-Fix the Arabic tanween placement.
+After implementing these changes, test the actual user journey.
 
-In "مرحباً", the tanween must be visually attached to/positioned correctly over the ب (baa) character, not incorrectly placed over the following alif.
+At minimum, verify this exact scenario:
 
-In "شكراً", the tanween must be correctly positioned over the ر (raa) character, not over the alif.
+1. Start a new/free player.
+2. Open Continue Your Journey.
+3. Complete Lesson 1.
+4. Confirm the player is taken to Minion 1, NOT Lesson 2.
+5. Confirm Minion 1 has the four gameplay-mode choices.
+6. Confirm Tetris-like Mode is locked for the free player.
+7. Complete Minion 1.
+8. Confirm Minion 2 becomes current.
+9. Complete Minion 2.
+10. Confirm Minion 3 becomes current.
+11. Complete Minion 3.
+12. Confirm Boss 1 becomes available.
+13. Complete Boss 1.
+14. Confirm the progression moves to Lesson 4.
+15. Repeat the same structure for Boss 2.
+16. Confirm the system does NOT stop after one minion.
+17. Confirm it does NOT route Lesson 1 → Lesson 2 → Lesson 3 automatically.
+18. Confirm the game actually contains 15 launch lessons.
+19. Confirm the progression data actually contains the correct boss/minion structure.
+20. Confirm completed progression is GREEN, current progression is YELLOW, and locked progression is GREY.
 
-Please inspect the actual Arabic text rendering/content and fix the source text/diacritics so the browser renders the tanween correctly.
+If any of these tests fail, investigate the underlying cause and fix it before considering the task complete.
 
-Do not merely reposition a random visual element if the underlying Arabic string itself is incorrect.
+DO NOT tell me that something was implemented merely because the UI looks different.
 
-==================================================
-14. DO NOT BREAK THE CURRENTLY FIXED FEATURES
-==================================================
-
-The following things are already working and MUST remain working:
-
-- Gear/settings icon is now correctly positioned.
-- Full trial has been restored.
-- Lucky Wheel spinning animation works.
-- Lucky Wheel animation now works on PC/web as well as phone.
-- Continue Your Journey currently opens the first lesson.
-
-Keep all of those.
-
-The goal is to fix the progression after the first lesson, not regress these features.
-
-==================================================
-15. HOME PAGE DESIGN / FUTURE ASSETS
-==================================================
-
-For now, keep using the current UI assets/placeholders.
-
-I will later provide dedicated game assets for:
-
-- Continue Your Journey
-- Tower
-- Lucky Wheel
-- Word of the Day
-- XP/progression gauge/banner
-- Leagues
-- Bosses
-- Gameplay modes
-
-Do not redesign the whole interface around these future assets now.
-
-Just make the underlying layout/components easy to replace with the final game assets later.
-
-==================================================
-16. IMPORTANT NAVIGATION RULE
-==================================================
-
-Do NOT create extra permanent tabs.
-
-The main navigation remains:
-
-Home
-Play
-Item Shop
-Achievements
-Leaderboard
-
-From Home:
-
-Continue Your Journey
-→ Lesson
-→ Mode Selection Page
-→ Minion
-→ next Lesson
-→ Mode Selection Page
-→ Minion
-→ next Lesson
-→ Mode Selection Page
-→ Minion
-→ Boss
-
-And separately:
-
-Home
-→ Your Lessons
-→ Full Lessons Page
-
-Home
-→ Your Tower
-→ existing/full Tower Page
-
-These are destinations/pages, NOT new permanent navigation tabs.
-
-==================================================
-17. FINAL ACCEPTANCE TEST
-==================================================
-
-Before considering this implementation complete, test the flow as a completely NEW/FRESH player.
-
-Test exactly this:
-
-1. Open the game as a fresh player.
-2. Confirm the first three minions are NOT already green.
-3. Confirm the player starts with the correct first lesson.
-4. Complete Lesson 1.
-5. Confirm the game does NOT send the player automatically to Lesson 2.
-6. Confirm it sends the player to the dedicated gameplay-mode selection page.
-7. Confirm all four existing gameplay modes are displayed.
-8. Confirm modes 1–3 are available.
-9. Confirm the Tetris-like mode is visible but locked for a free player.
-10. Select a free mode.
-11. Complete Minion 1.
-12. Confirm Minion 1 becomes green/completed.
-13. Confirm Minion 2 becomes the next available minion.
-14. Continue to Lesson 2.
-15. Complete Lesson 2.
-16. Choose a mode for Minion 2.
-17. Complete Minion 2.
-18. Continue to Lesson 3.
-19. Complete Lesson 3.
-20. Choose a mode for Minion 3.
-21. Complete Minion 3.
-22. Confirm Boss 1 becomes available.
-23. Confirm the progression state survives refresh.
-24. Open "Your Lessons / دروسك."
-25. Confirm it opens a full page, NOT a popup.
-26. Confirm all 15 lessons are displayed.
-27. Confirm completed/current/locked states are visually distinguishable.
-28. Confirm completed lessons can be revisited where appropriate.
-29. Confirm the real lesson content from GitHub is actually present.
-30. Confirm Arabic tanween placement is correct in "مرحباً" and "شكراً."
-31. Confirm the Tower progression and Lessons progression use the segmented design.
-32. Confirm progression colors form a sensible color spectrum rather than unrelated colors.
-33. Confirm the existing Home/Play/Item Shop/Achievements/Leaderboard navigation has NOT been replaced or expanded with unnecessary new tabs.
-34. Confirm the Lucky Wheel animation still works.
-35. Confirm the settings/gear icon remains correctly positioned.
-36. Confirm the full trial remains available.
-37. Confirm the PC/web version still has the Lucky Wheel animation.
-
-IMPORTANT:
-Do not stop after changing the UI.
-
-Verify the actual navigation, progression state, lesson data, locking/unlocking logic, and gameplay connections.
-
-The biggest requirement is that this must function as an actual progression system:
-
-LESSON → MINION → LESSON → MINION → LESSON → MINION → BOSS
-
-repeated for five boss chapters, giving:
-
-15 LESSONS
-15 MINIONS
-5 BOSSES
-
-with the four existing gameplay modes available at the appropriate minion encounters, while the Tetris-like fourth mode remains premium/locked for free players.
-
-Please implement this carefully using the existing project architecture and existing content rather than creating a parallel or fake system.
+The actual progression logic, data, routing, lesson content, minion count, boss count, and completion states must all be correct.
