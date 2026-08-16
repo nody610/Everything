@@ -1,80 +1,100 @@
-FOCUS ONLY ON THE GAME PROGRESSION FLOW. DO NOT CHANGE OR REWORK ANY OTHER FEATURE IN THIS PROMPT.
+THIS PROMPT IS ONLY ABOUT ONE ISSUE: THE ACTUAL RUNTIME TRANSITION AFTER COMPLETING A MINION.
 
-The current progression flow is still wrong. I need you to stop making surface-level changes and investigate the actual code that controls progression, unlocking, navigation, and completion states.
+Do NOT redesign the progression system again. You already stated that the intended six-step progression is implemented and verified.
 
-CURRENT BUG:
-After the player starts the journey, the game currently sends them through:
-Lesson 1 → Lesson 2 → Lesson 3 → Minion/Boss
+However, the actual app behavior proves that something in the runtime logic is contradicting that implementation.
 
-This is NOT the intended progression.
+WHAT I ACTUALLY OBSERVED:
 
-THE REQUIRED FLOW IS EXACTLY:
+Lesson 1 → First Minion = CORRECT.
 
-Lesson 1
-↓
-First Minion
-↓
-Lesson 2
-↓
-Second Minion
-↓
-Lesson 3
-↓
-Third Minion
-↓
-First Boss
+But after I COMPLETED THE FIRST MINION, the app immediately sent me to the FIRST BOSS / boss completion flow.
 
-The player must NOT be sent directly from Lesson 1 → Lesson 2 → Lesson 3.
+That is WRONG.
 
-After completing Lesson 1, the next action must be the FIRST MINION.
+After completing the First Minion, the app MUST send me to Lesson 2.
 
-After completing the first minion, the player should proceed to Lesson 2.
+So the actual runtime is behaving like:
 
-After completing Lesson 2, the player should proceed to the SECOND MINION.
+Lesson 1 → Minion 1 → Boss 1
 
-After completing the second minion, the player should proceed to Lesson 3.
+when it MUST behave like:
 
-After completing Lesson 3, the player should proceed to the THIRD MINION.
-
-After completing the third minion, the player should proceed to the FIRST BOSS.
+Lesson 1 → Minion 1 → Lesson 2
 
 IMPORTANT:
-By "minion", I mean a regular enemy weaker than the boss, with lower HP and its own progression position. It is NOT another boss, and it must not simply reuse the boss's name, emoji, identity, or progression state.
+Do not simply tell me that the intended six-step flow exists in the code. I already know that is what you implemented. The problem is that the RUNNING APPLICATION is not following it.
 
-DO NOT PATCH THIS BY SIMPLY CHANGING BUTTON TEXT OR REDIRECTION LABELS.
+Please investigate WHY the running application is producing this contradiction.
 
-First, inspect the actual implementation and determine WHY the current flow is skipping the minions and sending the player from lesson to lesson.
+I strongly suspect there is another piece of progression/navigation/completion logic still active somewhere in the codebase that is overriding, bypassing, or contradicting the new progression logic.
 
-Check all relevant parts of the code, including:
-- lesson completion logic
-- minion unlocking
-- boss unlocking
-- progression state
-- current lesson/current enemy state
-- navigation/redirection after completion
-- locked/unlocked/completed states
-- the logic that determines what the "Continue" button does
-- any hardcoded assumptions about the number/order of lessons, minions, or bosses
+Look specifically for:
 
-Find the actual roadblock causing the incorrect sequence.
+- post-minion completion handlers
+- enemy completion handlers
+- victory/congratulations screens
+- reward screens
+- "continue" actions after defeating an enemy
+- navigation logic after an enemy is defeated
+- boss-unlock logic
+- progression-state updates
+- hardcoded enemy/boss sequences
+- old progression logic from the previous implementation
+- duplicate progression functions
+- fallback navigation
+- stale state
+- cached/local progression state
+- conditions that interpret "enemy completed" as "boss unlocked"
+- conditions that automatically send the player to the boss after any enemy
+- contradictory logic between lesson progression and tower/enemy progression
+- any old code that still assumes the minions lead directly to the boss
 
-Then FIX THE UNDERLYING LOGIC so the exact progression above works naturally.
+The fact that the app showed me the full "Congratulations / reward / continue" flow for the first minion and then sent me toward the first boss is especially important.
 
-Do not invent a different progression system.
-Do not skip the minions.
-Do not send the player directly from Lesson 1 to Lesson 2.
-Do not send the player directly from Lesson 2 to Lesson 3.
-Do not send the player directly from Lesson 3 to the boss.
+Trace that EXACT execution path.
 
-After implementing the fix, test the progression from a fresh/new player state and verify the sequence step by step:
+Do not assume the problem is in the lesson system.
 
-1. Complete Lesson 1 → First Minion appears.
-2. Complete First Minion → Lesson 2 appears.
-3. Complete Lesson 2 → Second Minion appears.
-4. Complete Second Minion → Lesson 3 appears.
-5. Complete Lesson 3 → Third Minion appears.
-6. Complete Third Minion → First Boss appears.
+Start from the moment the player finishes Minion 1 and follow the actual code path that determines the next destination.
 
-If anything in the existing code prevents this sequence, identify it and fix it rather than working around it.
+Find the exact condition/function/state that causes the application to choose Boss 1 instead of Lesson 2.
 
-DO NOT MODIFY ANY UNRELATED FEATURE IN THIS PROMPT.
+Then fix THAT underlying cause.
+
+Also check for contradictory or duplicated progression information elsewhere in the project. If there is an older rule saying something equivalent to:
+
+"after defeating a minion → go to boss"
+
+or:
+
+"after completing an enemy → boss becomes next"
+
+or any equivalent hardcoded behavior, remove/update it so it no longer conflicts with the intended progression.
+
+VERY IMPORTANT:
+Do not solve this by changing text, labels, button names, or merely changing what the screen says.
+
+The actual navigation/state transition must be correct.
+
+After fixing it, test the REAL RUNNING APPLICATION, not only the code or a theoretical state.
+
+Start from a fresh progression state and actually perform:
+
+Lesson 1 → complete it → Minion 1
+Minion 1 → complete it → VERIFY THAT LESSON 2 OPENS
+
+Stop at that point and verify that the app does NOT open:
+- Boss 1
+- the boss reward screen
+- the boss victory screen
+- the boss introduction
+- any "return to home" screen that belongs to boss completion
+
+The expected destination immediately after Minion 1 is Lesson 2.
+
+If you have access to the browser/app testing environment, actually click through this sequence yourself and inspect what happens after Minion 1. Do not rely only on static code inspection.
+
+Most importantly: FIND THE CONFLICTING LOGIC that is causing the runtime to choose Boss 1.
+
+Do not make unrelated changes in this prompt.
