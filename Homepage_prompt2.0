@@ -1,78 +1,74 @@
-FOCUS ONLY ON ONE ISSUE: POST-BOSS CONTINUITY.
+FOCUS ONLY ON THE CRYSTAL SYSTEM AFTER BOSS COMPLETION.
 
-The progression BEFORE the first boss is now working correctly. DO NOT CHANGE IT.
+IMPORTANT: The current progression flow is working correctly. DO NOT break or redesign it.
 
-The current working flow is:
+The current flow is:
 
-Lesson 1
-→ Minion 1
-→ Lesson 2
-→ Minion 2
-→ Lesson 3
-→ Minion 3
-→ Boss 1
+Lesson 1 → Minion 1 → Lesson 2 → Minion 2 → Lesson 3 → Minion 3 → Boss 1 → Home → Lesson 4
 
-That part is GOOD. Leave it alone.
+KEEP THIS FLOW EXACTLY AS IT IS.
 
-The problem starts AFTER Boss 1 is completed.
+Now I want to make the crystals an important part of the progression and lore.
 
-CURRENT BEHAVIOR:
+After defeating a boss, the player receives the boss's crystals. These crystals should NOT simply be treated as a reward that disappears into the inventory.
 
-The player defeats Boss 1, receives the four crystals, and completes the boss/reward sequence.
+The player should have to USE/PLACE the collected crystals somewhere meaningful in the world.
 
-The player then returns to the Home page.
+LORE/PROGRESSION IDEA:
 
-However, the Home page does not correctly continue the player's journey. It only sends the player to "Go to Tower", and that does not provide the actual next progression.
+The tower's floors are dark/inactive because of the Oblivion Storm.
 
-The expected progression after Boss 1 is:
+When the player defeats a boss and obtains its crystals, those crystals can be placed into the tower's corresponding mechanism/core/seal/altar — whatever existing lore terminology and visual design best fits the game.
 
-Boss 1 completed
-→ return to Home
-→ Continue Your Journey
-→ Lesson 4
+Placing the required crystals should:
 
-The player should NOT be sent into the old Tower/map tab as the next progression step.
+1. Consume/use the collected crystals appropriately.
+2. Activate/illuminate the corresponding tower floor.
+3. Visually communicate that the floor has been CLEARED and restored.
+4. Unlock/enable progression toward the next floor/boss.
+5. Make the crystals feel like an actual gameplay/progression mechanic rather than just an ordinary reward.
 
-The Tower can still exist as a progression/overview interface, but it must NOT replace the actual "Continue Your Journey" progression.
+For example:
+
+Boss 1 defeated
+→ player receives the required crystals
+→ player places the crystals into the appropriate tower mechanism
+→ Floor 1 becomes illuminated/restored
+→ the path toward Floor 2 becomes available
+→ the player can continue their journey.
+
+The same concept should be scalable for later floors:
+
+Boss 2 → crystals → activate Floor 2
+Boss 3 → crystals → activate Floor 3
+Boss 4 → crystals → activate Floor 4
+etc.
 
 IMPORTANT:
+Do NOT redesign the existing progression flow.
 
-There is currently another tab/page containing the Tower/map levels. That interface does not provide the player with a proper way to continue through the actual lesson/minion/boss progression.
+Do NOT make the crystal interaction block the currently working lesson/minion/boss sequence in an awkward way.
 
-Because of that, DO NOT use that second tab as the destination for "Continue Your Journey".
+Instead, integrate the crystal placement naturally into the existing post-boss sequence.
 
-The Home page's "Continue Your Journey" must follow the player's actual progression state.
+The player should clearly understand:
+"I defeated this boss, obtained its crystals, and now I need to restore/illuminate this part of the tower."
 
-After Boss 1 is completed, the player's next progression target is Lesson 4.
+Please inspect the existing Tower UI, boss progression, crystal/reward logic, and lore-related elements before implementing this.
 
-Please inspect the code that determines:
+If there is already an appropriate place/mechanism in the existing design for placing the crystals, use it instead of inventing an unrelated interface.
 
-- what the Home page considers the "current journey"
-- what happens after Boss 1 completion
-- what progression state is saved after defeating Boss 1
-- how the Home page determines the next lesson
-- why it currently falls back to "Go to Tower"
-- whether the old second-tab/Tower navigation is overriding the intended progression
-- any stale or contradictory progression logic that still treats the Tower as the next destination
+The visual result should make it obvious that the floor has changed from DARK/INACTIVE → RESTORED/ILLUMINATED after the crystals are placed.
 
-DO NOT simply change the text from "Go to Tower" to "Lesson 4".
+Most importantly, the crystal placement should have REAL progression/state behind it, not just be a visual animation.
 
-Find and fix the underlying progression state/navigation so that the application actually knows:
+Test that:
 
-Boss 1 completed → next progression = Lesson 4.
+Boss 1 completed
+→ crystals obtained
+→ crystals can be placed
+→ Floor 1 becomes illuminated/restored
+→ progression toward the next floor remains available
+→ returning to Home still correctly continues the player's journey.
 
-Then test it in the running application:
-
-1. Complete Boss 1.
-2. Return to Home.
-3. Press "Continue Your Journey".
-4. Verify that it opens Lesson 4 directly.
-
-Do NOT modify the progression before Boss 1.
-Do NOT modify the minion flow.
-Do NOT modify the boss battle.
-Do NOT modify the lesson count/content in this prompt.
-Do NOT modify colors, settings, game modes, or unrelated UI.
-
-ONLY FIX THE POST-BOSS-1 CONTINUITY:
-Boss 1 → Home → Continue Your Journey → Lesson 4.
+DO NOT modify unrelated features in this task.
