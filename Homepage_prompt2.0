@@ -1,52 +1,85 @@
-FOCUS ONLY ON THE LABELS OF THE TWO POST-BOSS OPTIONS.
+FOCUS ONLY ON THE LESSON CONTENT AND LESSON COUNT.
 
-The crystal progression and gating are ALREADY WORKING CORRECTLY. DO NOT CHANGE THEM.
+Do NOT modify the current progression flow. It is working correctly now.
 
-I tested it after refreshing, and the game correctly prevents the player from continuing to Lesson 4 until the required crystals have been placed. When I return to Home and press Continue Your Journey, it correctly tells me to place the crystals.
-
-So DO NOT modify:
-- crystal requirements
-- crystal placement
-- progression locking
-- Lesson 4 unlocking
-- Home-page progression
+Do NOT modify:
 - boss progression
-- Tower progression
+- minion progression
+- crystal mechanics
+- Tower navigation
+- Home navigation
+- game modes
+- colors
+- settings
+- post-boss screens
 
-ONLY FIX THE LABELS OF THE TWO OPTIONS SHOWN AFTER THE BOSS.
+ONLY FIX THE LESSON SYSTEM.
 
-Currently, both options are incorrectly labeled "الرئيسية", even though they perform different actions.
+CURRENT REQUIREMENT:
 
-OPTION 1:
-This option currently redirects the player to the Tower progression/map where they can select the floor and PLACE THE CRYSTALS.
+For the current version of the game, we have 5 bosses available.
 
-Therefore, rename this first option from:
+The intended structure is:
 
-"الرئيسية"
+5 bosses × 3 lessons per boss = 15 lessons.
 
-to a clear Arabic action such as:
+Therefore, the current version MUST contain exactly 15 active lessons.
 
-"ضع البلورات"
+IMPORTANT:
+Do NOT create fake placeholder lessons.
+Do NOT invent lesson content.
+Do NOT leave lessons as title-only placeholders.
 
-This should clearly communicate that selecting it will take the player to the place where they need to put the crystals.
+The actual lesson content already exists in the project's GitHub/source code.
 
-OPTION 2:
-This option actually redirects the player to the Home page.
+SEARCH THE EXISTING PROJECT/GITHUB CONTENT AND TRANSFER THE REAL LESSON CONTENT INTO THE ACTIVE GAME LESSON DATA.
 
-Keep this option labeled:
+I have repeatedly asked for the lessons that already exist in the project to be actually used by the game. Please inspect the repository carefully and find the existing lesson definitions/content instead of assuming that the placeholder data is the final data.
 
-"الرئيسية"
+Requirements:
 
-So the final two options should conceptually be:
+1. Find the actual lesson content already present in the project/GitHub.
+2. Determine which 15 lessons belong in the CURRENT 5-boss version.
+3. Make exactly those 15 lessons active and accessible in the game.
+4. Remove or disable any extra lesson slots beyond the 15 required for this version.
+5. Do not invent missing lessons just to reach 15.
+6. Do not silently delete valid lesson content without checking the existing source data first.
+7. Make sure the lessons displayed in the game use the actual lesson data rather than placeholder titles.
 
-1. "ضع البلورات" → Tower progression → Floor 1 → place crystals
-2. "الرئيسية" → Home page
+Also verify the lesson progression list.
 
-Do NOT change what either button does. Only correct their labels so the text accurately describes their existing destinations.
+When the player opens the lesson progression, it should show the 15 lessons and clearly indicate:
+- completed lessons
+- the current/next lesson
+- locked/unavailable lessons
 
-After changing the labels, test that:
-- "ضع البلورات" still opens the Tower progression.
-- "الرئيسية" still opens the Home page.
-- Crystal gating remains exactly as it currently works.
+The existing progression behavior should remain intact.
 
-MAKE NO OTHER CHANGES.
+IMPORTANT ARABIC CONTENT CHECK:
+
+While importing/activating the real lesson content, preserve the Arabic exactly and correctly.
+
+Pay particular attention to harakāt/diacritics and tanween.
+
+For example, the correct forms are:
+
+"شكرًا"
+"مرحبًا"
+
+The tanween must be attached to the correct preceding letter, not placed on the following alif.
+
+Do not introduce spacing or Unicode-character mistakes when transferring the lesson content.
+
+BEFORE CHANGING ANYTHING:
+
+Inspect the existing lesson data in the project and report/verify:
+- how many real lessons exist
+- where they are stored
+- which 15 should be active for the current 5-boss version
+- whether there are duplicate or placeholder lesson entries
+
+Then implement the correct 15-lesson dataset.
+
+Finally, actually test the lesson list and open several lessons from it to confirm that the real content is being displayed.
+
+Do not make unrelated changes.
