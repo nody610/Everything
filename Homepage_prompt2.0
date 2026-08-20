@@ -1,85 +1,54 @@
-FOCUS ONLY ON THE LESSON CONTENT AND LESSON COUNT.
+CLAUDE — COMPLETE THE REMAINING LESSON CONTENT NOW. DO NOT REDESIGN OR REWORK EXISTING CONTENT.
 
-Do NOT modify the current progression flow. It is working correctly now.
+You already have the full curriculum content available in the GitHub/repository and you have already successfully integrated lessons 1–10. I am NOT asking you to investigate which curriculum draft to use again. That decision has already been made.
 
-Do NOT modify:
-- boss progression
-- minion progression
-- crystal mechanics
-- Tower navigation
-- Home navigation
-- game modes
-- colors
-- settings
-- post-boss screens
+CURRENT STATE:
+- Lessons 1–10 are already implemented.
+- You already confirmed that the real curriculum content is available.
+- You already integrated the additional lessons and fixed the harakat/tanween issues.
+- The remaining problem is simply that lessons 11–15 are still inaccessible/not implemented for the relevant stages.
+- The game ultimately needs 30 lessons total for the FULL/PAID version.
+- Do NOT stop at 10 or 15.
+- Do NOT invent replacement content.
+- Do NOT remove or rewrite the lessons that are already working.
 
-ONLY FIX THE LESSON SYSTEM.
+YOUR TASK:
 
-CURRENT REQUIREMENT:
+1. COMPLETE THE MISSING LESSONS 11–15 using the actual curriculum content already available in the repository/source material.
 
-For the current version of the game, we have 5 bosses available.
+2. Then continue the curriculum through LESSON 30 so that the FULL/PAID VERSION has all 30 lessons available.
 
-The intended structure is:
+3. Make sure the lessons are actually PLAYABLE and ACCESSIBLE in the game, not merely present in a data file.
 
-5 bosses × 3 lessons per boss = 15 lessons.
+4. Make sure the lesson progression correctly recognizes all 30 lessons.
 
-Therefore, the current version MUST contain exactly 15 active lessons.
+5. Make sure the FREE VERSION remains limited according to the existing free-version design, while the FULL/PAID VERSION unlocks the complete 30-lesson curriculum.
 
-IMPORTANT:
-Do NOT create fake placeholder lessons.
-Do NOT invent lesson content.
-Do NOT leave lessons as title-only placeholders.
+6. Do not break the existing lesson → minion → lesson → minion → lesson → minion → boss progression that is now working.
 
-The actual lesson content already exists in the project's GitHub/source code.
+7. Do not break the crystal-placement progression or any of the fixes from the previous versions.
 
-SEARCH THE EXISTING PROJECT/GITHUB CONTENT AND TRANSFER THE REAL LESSON CONTENT INTO THE ACTIVE GAME LESSON DATA.
+8. Preserve the existing lesson content that is already working. Only add the missing curriculum content and connect it properly.
 
-I have repeatedly asked for the lessons that already exist in the project to be actually used by the game. Please inspect the repository carefully and find the existing lesson definitions/content instead of assuming that the placeholder data is the final data.
+9. IMPORTANT: You already have the source content. Do not spend another long cycle merely investigating or explaining what the curriculum is. USE THE CONTENT AND IMPLEMENT IT.
 
-Requirements:
+10. After implementation, actually verify that the newly added lessons open and render correctly, especially:
+   - Lesson 11
+   - Lesson 15
+   - Lesson 20
+   - Lesson 25
+   - Lesson 30
 
-1. Find the actual lesson content already present in the project/GitHub.
-2. Determine which 15 lessons belong in the CURRENT 5-boss version.
-3. Make exactly those 15 lessons active and accessible in the game.
-4. Remove or disable any extra lesson slots beyond the 15 required for this version.
-5. Do not invent missing lessons just to reach 15.
-6. Do not silently delete valid lesson content without checking the existing source data first.
-7. Make sure the lessons displayed in the game use the actual lesson data rather than placeholder titles.
+11. Also verify that the paid-version progression can actually reach the later lessons and is not accidentally capped at lesson 10 or 15.
 
-Also verify the lesson progression list.
+12. DO NOT REPORT “I found the content” as the completion of the task. The task is completed only when the content is implemented, accessible, and playable.
 
-When the player opens the lesson progression, it should show the 15 lessons and clearly indicate:
-- completed lessons
-- the current/next lesson
-- locked/unavailable lessons
+13. Preserve all existing Arabic harakat/tanween corrections. In particular, do not reintroduce incorrect tanween placement on alif. Continue applying the corrected Arabic orthography throughout any newly added content.
 
-The existing progression behavior should remain intact.
+14. IMPORTANT LORE CHECK:
+I have not yet personally fought the 5th boss, so I cannot confirm whether the lore/dialogue/event that should appear around that boss is working correctly. While verifying the later progression, check that the 5th boss and its associated lore/event sequence are actually reachable and functional. Do not rewrite the lore unless there is an actual broken/missing implementation; just make sure it works.
 
-IMPORTANT ARABIC CONTENT CHECK:
+FINAL REQUIREMENT:
+Finish the implementation rather than stopping after an investigation report. I want the missing lessons actually in the game, including the complete 30-lesson paid curriculum, with the existing progression and game logic preserved.
 
-While importing/activating the real lesson content, preserve the Arabic exactly and correctly.
-
-Pay particular attention to harakāt/diacritics and tanween.
-
-For example, the correct forms are:
-
-"شكرًا"
-"مرحبًا"
-
-The tanween must be attached to the correct preceding letter, not placed on the following alif.
-
-Do not introduce spacing or Unicode-character mistakes when transferring the lesson content.
-
-BEFORE CHANGING ANYTHING:
-
-Inspect the existing lesson data in the project and report/verify:
-- how many real lessons exist
-- where they are stored
-- which 15 should be active for the current 5-boss version
-- whether there are duplicate or placeholder lesson entries
-
-Then implement the correct 15-lesson dataset.
-
-Finally, actually test the lesson list and open several lessons from it to confirm that the real content is being displayed.
-
-Do not make unrelated changes.
+Before reporting completion, test the actual user flow far enough to confirm that the newly added lessons are not just database entries but can really be opened and played.
